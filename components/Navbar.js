@@ -7,7 +7,7 @@ import { MdAccountCircle } from "react-icons/md";
 
 const Navbar = () => {
   return (
-    <div className="flex flex-col md:flex-row md:justify-start justify-center items-center z-10 shadow-lg sticky bg-white top-0 backdrop-blur-sm">
+    <div className="flex flex-col pb-4 md:pb-0 md:flex-row md:justify-start justify-center items-center z-10 shadow-lg sticky bg-white top-0 backdrop-blur-sm">
       <div className="mr-auto md:mx-5">
         <Link href={"/"}>
           <Image src={"/logo-red.svg"} alt="logo" width={200} height={40} />

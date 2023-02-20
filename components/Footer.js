@@ -1,15 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useState } from "react";
 
 const Footer = () => {
+  
   return (
     <div>
       <footer className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
           <div className="w-64 flex-shrink-0 md:mx-0 mx-auto px-6 text-center md:text-left">
             <Link href={"/"}>
-              <Image src={"/logo.svg"} alt="Logo" width={200} height={40} />
+              <Image src={"/logo-red.svg"} alt="Logo" width={200} height={40} />
             </Link>
             <p className="mt-2 text-sm text-gray-500 mx-2">Wear your Anime</p>
             <p className="text-sm text-gray-500 mx-2">Premium anime tshirts, hoodies and accessories</p>
@@ -33,13 +35,13 @@ const Footer = () => {
               </nav>
             </div>
             <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-              <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">About</h2>
+              <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">ABOUT</h2>
               <nav className="list-none mb-10">
                 <li>
                   <a className="text-gray-600 hover:text-gray-800">Contact Us</a>
                 </li>
                 <li>
-                  <a className="text-gray-600 hover:text-gray-800">About US</a>
+                  <a className="text-gray-600 hover:text-gray-800">About Us</a>
                 </li>
               </nav>
             </div>
@@ -69,7 +71,7 @@ const Footer = () => {
         </div>
         <div className="bg-gray-100">
           <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
-            <p className="text-gray-500 text-sm text-center sm:text-left">© 2023 CodesWear — All Rights Reserved</p>
+            <p className="text-gray-500 text-sm text-center sm:text-left">© 2023 AnimeWear — All Rights Reserved</p>
             <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
               <a className="text-gray-500">
                 <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
