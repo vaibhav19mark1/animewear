@@ -1,11 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineShoppingCart, AiFillCloseCircle, AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { BsFillBagCheckFill } from "react-icons/bs";
-import { MdAccountCircle } from "react-icons/md";
+import { MdAccountCircle, MdRemoveShoppingCart } from "react-icons/md";
 
 const Navbar = () => {
+  const [sideCart, setSideCart] = useState(false);
+
+  const toggleCart = () => {
+    setSideCart(!sideCart);
+  };
+
   return (
     <div className="flex flex-col pb-4 md:pb-0 md:flex-row md:justify-start justify-center items-center z-10 shadow-lg sticky bg-white top-0 backdrop-blur-sm">
       <div className="mr-auto md:mx-5">
@@ -32,7 +38,63 @@ const Navbar = () => {
         </Link>
 
         <MdAccountCircle className="text-xl md:text-3xl mx-2" />
-        <AiOutlineShoppingCart className="text-xl md:text-3xl" />
+        <AiOutlineShoppingCart className="text-xl md:text-3xl" onClick={toggleCart} />
+      </div>
+
+      {/* shopping cart */}
+
+      <div className={`absolute top-0 ${sideCart ? "right-0" : "-right-96"} w-72 md:w-96 h-[100vh] bg-white px-8 py-10 overflow-y-scroll shadow-xl transition-all`}>
+        <h2 className="text-xl text-center font-bold mb-4">Shopping Cart</h2>
+        <span className="text-2xl absolute top-5 right-2 text-red-600 cursor-pointer" onClick={toggleCart}>
+          <AiFillCloseCircle />
+        </span>
+        <ol className="list-decimal font-semibold ml-2">
+          <li>
+            <div className="flex my-5">
+              <div className="w-3/4 font-semibold">Item number 1</div>
+              <div className="w-1/4 flex items-center justify-between font-semibold text-lg">
+                <AiFillMinusCircle className="text-red-500 cursor-pointer" />
+                <span></span>
+                <AiFillPlusCircle className="text-red-500 cursor-pointer" />
+              </div>
+            </div>
+          </li>
+          <li>
+            <div className="flex my-5">
+              <div className="w-3/4 font-semibold">Item number 2</div>
+              <div className="w-1/4 flex items-center justify-between font-semibold text-lg">
+                <AiFillMinusCircle className="text-red-500 cursor-pointer" />
+                <span></span>
+                <AiFillPlusCircle className="text-red-500 cursor-pointer" />
+              </div>
+            </div>
+          </li>
+          <li>
+            <div className="flex my-5">
+              <div className="w-3/4 font-semibold">Item number 3</div>
+              <div className="w-1/4 flex items-center justify-between font-semibold text-lg">
+                <AiFillMinusCircle className="text-red-500 cursor-pointer" />
+                <span></span>
+                <AiFillPlusCircle className="text-red-500 cursor-pointer" />
+              </div>
+            </div>
+          </li>
+        </ol>
+        <div className="font-bold my-2">SubTotal: </div>
+        <div className="flex justify-center my-2">
+          <Link href={"#"}>
+            <button className="disabled:bg-red-300 flex mr-2 mt-2 text-white m-auto bg-red-500 border-0 py-2 px-2 focus:outline-none hover:bg-red-600 rounded text-sm">
+              <BsFillBagCheckFill className="m-1" />
+              CheckOut
+            </button>
+          </Link>
+          <Link href={"#"}>
+            <button className="disabled:bg-red-300 flex mr-2 mt-2 text-white m-auto bg-red-500 border-0 py-2 px-2 focus:outline-none hover:bg-red-600 rounded text-sm">
+              <MdRemoveShoppingCart className="m-1" />
+              Clear Cart
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );

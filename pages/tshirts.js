@@ -16,7 +16,7 @@ const Tshirts = () => {
         <section>
           <div className="flex flex-wrap justify-center">
             <div className="lg:w-1/5 md:w-1/3 w-1/2 border border-gray-300 md:border-none md:shadow-lg m-0 md:m-5 md:transition md:ease-in-out md:hover:-translate-y-1 md:hover:scale-110 md:duration-300">
-              <Link href={"#"} className="block relative h-auto md:h-72 overflow-hidden">
+              <Link href={"/product/tshirt"} className="block relative h-auto md:h-72 overflow-hidden">
                 <img src="https://cdn.shopify.com/s/files/1/0070/1700/5113/products/TSM197RDMN_ecomm-2_600x.jpg?v=1673372769" alt="tshirt-image" className="object-top block" />
               </Link>
               <div className="mt-4 pl-4 pb-4">
