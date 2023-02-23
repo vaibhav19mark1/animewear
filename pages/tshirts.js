@@ -1,3 +1,4 @@
+import { useCartContext } from "@/context/cart/cartContext";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";

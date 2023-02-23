@@ -1,3 +1,4 @@
+import { useCartContext } from "@/context/cart/cartContext";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -6,6 +7,7 @@ import { BsFillBagCheckFill } from "react-icons/bs";
 import { MdAccountCircle, MdRemoveShoppingCart } from "react-icons/md";
 
 const Navbar = () => {
+  const { cart, addToCart, removeFromCart, clearCart, subTotal } = useCartContext();
   const [sideCart, setSideCart] = useState(false);
 
   const toggleCart = () => {
@@ -49,47 +51,42 @@ const Navbar = () => {
           <AiFillCloseCircle />
         </span>
         <ol className="list-decimal font-semibold ml-2">
-          <li>
-            <div className="flex my-5">
-              <div className="w-3/4 font-semibold">Item number 1</div>
-              <div className="w-1/4 flex items-center justify-between font-semibold text-lg">
-                <AiFillMinusCircle className="text-red-500 cursor-pointer" />
-                <span></span>
-                <AiFillPlusCircle className="text-red-500 cursor-pointer" />
-              </div>
-            </div>
-          </li>
-          <li>
-            <div className="flex my-5">
-              <div className="w-3/4 font-semibold">Item number 2</div>
-              <div className="w-1/4 flex items-center justify-between font-semibold text-lg">
-                <AiFillMinusCircle className="text-red-500 cursor-pointer" />
-                <span></span>
-                <AiFillPlusCircle className="text-red-500 cursor-pointer" />
-              </div>
-            </div>
-          </li>
-          <li>
-            <div className="flex my-5">
-              <div className="w-3/4 font-semibold">Item number 3</div>
-              <div className="w-1/4 flex items-center justify-between font-semibold text-lg">
-                <AiFillMinusCircle className="text-red-500 cursor-pointer" />
-                <span></span>
-                <AiFillPlusCircle className="text-red-500 cursor-pointer" />
-              </div>
-            </div>
-          </li>
+          {Object.keys(cart).length == 0 && <div className="my-4 text-center font-semibold">Your Cart is Empty!</div>}
+          {Object.keys(cart).map((itemCode) => {
+            return (
+              <li key={itemCode}>
+                <div className="flex my-5">
+                  <div className="w-3/4 font-semibold">{cart[itemCode].name}</div>
+                  <div className="w-1/4 flex items-center justify-between font-semibold text-lg">
+                    <AiFillMinusCircle
+                      onClick={() => {
+                        removeFromCart(itemCode, 1);
+                      }}
+                      className="text-red-500 cursor-pointer"
+                    />
+                    <span>{cart[itemCode].qty}</span>
+                    <AiFillPlusCircle
+                      onClick={() => {
+                        addToCart(itemCode, cart[itemCode].name, 1, cart[itemCode].size, cart[itemCode].variant, cart[itemCode].price);
+                      }}
+                      className="text-red-500 cursor-pointer"
+                    />
+                  </div>
+                </div>
+              </li>
+            );
+          })}
         </ol>
-        <div className="font-bold my-2">SubTotal: </div>
+        <div className="font-bold my-2">SubTotal: {subTotal}</div>
         <div className="flex justify-center my-2">
-          <Link href={"#"}>
+          <Link href={"/checkout"}>
             <button className="disabled:bg-red-300 flex mr-2 mt-2 text-white m-auto bg-red-500 border-0 py-2 px-2 focus:outline-none hover:bg-red-600 rounded text-sm">
               <BsFillBagCheckFill className="m-1" />
               CheckOut
             </button>
           </Link>
           <Link href={"#"}>
-            <button className="disabled:bg-red-300 flex mr-2 mt-2 text-white m-auto bg-red-500 border-0 py-2 px-2 focus:outline-none hover:bg-red-600 rounded text-sm">
+            <button onClick={clearCart} className="disabled:bg-red-300 flex mr-2 mt-2 text-white m-auto bg-red-500 border-0 py-2 px-2 focus:outline-none hover:bg-red-600 rounded text-sm">
               <MdRemoveShoppingCart className="m-1" />
               Clear Cart
             </button>
