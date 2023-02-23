@@ -3,6 +3,7 @@ import Product from "@/models/Product";
 
 const handler = async (req, res) => {
   if (req.method == "POST") {
+    await connectDb();
     for (let i = 0; i < req.body.length; i++) {
       let p = new Product({
         title: req.body[i].title,
@@ -23,4 +24,4 @@ const handler = async (req, res) => {
   }
 };
 
-export default connectDb(handler);
+export default handler;

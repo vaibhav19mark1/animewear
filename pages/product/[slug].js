@@ -93,3 +93,32 @@ const Slug = () => {
 };
 
 export default Slug;
+
+export async function getServerSideProps(context) {
+  mongoose.set("strictQuery", true);
+  if (!mongoose.connections[0].readyState) {
+    await mongoose.connect(process.env.MONGO_URI);
+  }
+  let error=null;
+  let product = await Product.findOne({ slug: context.query.slug });
+  if (product == null) {
+    return {
+      props: { error: 404 },
+    };
+  }
+  let variants = await Product.find({ title: product.title, category: product.category });
+  let sizeColorSlug = {};
+
+  for (let item of variants) {
+    if (Object.keys(sizeColorSlug).includes(item.size)) {
+      sizeColorSlug[item.size][item.color] = { slug: item.slug };
+    } else {
+      sizeColorSlug[item.size] = {};
+      sizeColorSlug[item.size][item.color] = { slug: item.slug };
+    }
+  }
+
+  return {
+    props: { product: JSON.parse(JSON.stringify(product)), variants: JSON.parse(JSON.stringify(sizeColorSlug)) },
+  };
+}
