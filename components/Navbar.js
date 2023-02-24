@@ -56,7 +56,7 @@ const Navbar = () => {
             return (
               <li key={itemCode}>
                 <div className="flex my-5">
-                  <div className="w-3/4 font-semibold">{cart[itemCode].name}</div>
+                  <div className="w-3/4 font-semibold">{cart[itemCode].name}({cart[itemCode].size}/{cart[itemCode].variant})</div>
                   <div className="w-1/4 flex items-center justify-between font-semibold text-lg">
                     <AiFillMinusCircle
                       onClick={() => {
