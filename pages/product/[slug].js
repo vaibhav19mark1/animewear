@@ -32,6 +32,8 @@ const Slug = ({ product, variants, error }) => {
   };
 
   const refreshVariant = (newSize, newColor) => {
+    setSize(newSize);
+    setColor(newColor);
     let url = `${process.env.NEXT_PUBLIC_HOST}/product/${variants[newColor][newSize].slug}`;
     router.push(url);
   };
@@ -58,8 +60,8 @@ const Slug = ({ product, variants, error }) => {
                   {Object.keys(variants).includes("black") && (
                     <button
                       onClick={() => {
-                        setColor("black");
-                        // refreshVariant(size, "black");
+                        // setColor("black");
+                        refreshVariant(size, "black");
                       }}
                       className={`border-2 ${color == "black" ? "border-gray-600" : "border-gray-300"} ml-1 bg-black rounded-full w-8 h-8 hover:border-gray-600`}
                     ></button>
@@ -67,8 +69,8 @@ const Slug = ({ product, variants, error }) => {
                   {Object.keys(variants).includes("blue") && (
                     <button
                       onClick={() => {
-                        setColor("blue");
-                        // refreshVariant(size, "blue");
+                        // setColor("blue");
+                        refreshVariant(size, "blue");
                       }}
                       className={`border-2 ${color == "blue" ? "border-gray-600" : "border-gray-300"} ml-1 bg-blue-500 rounded-full w-8 h-8 hover:border-gray-600`}
                     ></button>
@@ -76,8 +78,8 @@ const Slug = ({ product, variants, error }) => {
                   {Object.keys(variants).includes("red") && (
                     <button
                       onClick={() => {
-                        setColor("red");
-                        // refreshVariant(size, "red");
+                        // setColor("red");
+                        refreshVariant(size, "red");
                       }}
                       className={`border-2 ${color == "red" ? "border-gray-600" : "border-gray-300"} ml-1 bg-red-500 rounded-full w-8 h-8 hover:border-gray-600`}
                     ></button>
@@ -85,8 +87,8 @@ const Slug = ({ product, variants, error }) => {
                   {Object.keys(variants).includes("green") && (
                     <button
                       onClick={() => {
-                        setColor("green");
-                        // refreshVariant(size, "green");
+                        // setColor("green");
+                        refreshVariant(size, "green");
                       }}
                       className={`border-2 ${color == "green" ? "border-gray-600" : "border-gray-300"} ml-1 bg-green-500 rounded-full w-8 h-8 hover:border-gray-600`}
                     ></button>
@@ -94,8 +96,8 @@ const Slug = ({ product, variants, error }) => {
                   {Object.keys(variants).includes("yellow") && (
                     <button
                       onClick={() => {
-                        setColor("yellow");
-                        // refreshVariant(size, "yellow");
+                        // setColor("yellow");
+                        refreshVariant(size, "yellow");
                       }}
                       className={`border-2 ${color == "yellow" ? "border-gray-600" : "border-gray-300"} ml-1 bg-yellow-500 rounded-full w-8 h-8 hover:border-gray-600`}
                     ></button>
@@ -107,8 +109,7 @@ const Slug = ({ product, variants, error }) => {
                   <span className="mr-3">Sizes</span>
                   <button
                     onClick={() => {
-                      setSize("S");
-                      refreshVariant(size, color);
+                      refreshVariant("S", color);
                     }}
                     disabled={!Object.keys(variants[color]).includes("S")}
                     className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "S" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
@@ -117,8 +118,8 @@ const Slug = ({ product, variants, error }) => {
                   </button>
                   <button
                     onClick={() => {
-                      setSize("M");
-                      refreshVariant(size, color);
+                      // setSize("M");
+                      refreshVariant("M", color);
                     }}
                     disabled={!Object.keys(variants[color]).includes("M")}
                     className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "M" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
@@ -127,8 +128,8 @@ const Slug = ({ product, variants, error }) => {
                   </button>
                   <button
                     onClick={() => {
-                      setSize("L");
-                      refreshVariant(size, color);
+                      // setSize("L");
+                      refreshVariant("L", color);
                     }}
                     disabled={!Object.keys(variants[color]).includes("L")}
                     className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "L" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
@@ -137,8 +138,8 @@ const Slug = ({ product, variants, error }) => {
                   </button>
                   <button
                     onClick={() => {
-                      setSize("XL");
-                      refreshVariant(size, color);
+                      // setSize("XL");
+                      refreshVariant("XL", color);
                     }}
                     disabled={!Object.keys(variants[color]).includes("XL")}
                     className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "XL" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
@@ -147,8 +148,8 @@ const Slug = ({ product, variants, error }) => {
                   </button>
                   <button
                     onClick={() => {
-                      setSize("XXL");
-                      refreshVariant(size, color);
+                      // setSize("XXL");
+                      refreshVariant("XXL", color);
                     }}
                     disabled={!Object.keys(variants[color]).includes("XXL")}
                     className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "XXL" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
