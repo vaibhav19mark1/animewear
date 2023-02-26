@@ -1,9 +1,12 @@
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import CartContext from "./cartContext";
 
 const CartState = (props) => {
   const [cart, setCart] = useState({});
+  const [user, setUser] = useState({ value: null });
   const [subTotal, setSubTotal] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     // getting cart from local storage
@@ -15,6 +18,10 @@ const CartState = (props) => {
     } catch (error) {
       console.log(error);
       localStorage.clear();
+    }
+    const myuser = JSON.parse(localStorage.getItem("myuser"));
+    if (myuser) {
+      setUser({ value: myuser.token, email: myuser.email });
     }
   }, []);
 
@@ -45,6 +52,15 @@ const CartState = (props) => {
     setCart(newCart);
   };
 
+  //! Buy Now
+  const buyNow = (itemCode, price, name, size, variant) => {
+    let newCart = {};
+    newCart[itemCode] = { qty: 1, price, name, size, variant };
+    setCart(newCart);
+    saveCart(newCart);
+    router.push("/checkout");
+  };
+
   //! Remove from cart
   const removeFromCart = (itemCode, qty) => {
     let newCart = cart;
@@ -64,7 +80,7 @@ const CartState = (props) => {
     saveCart({});
     console.log("Cart cleared");
   };
-  return <CartContext.Provider value={{ cart, subTotal, clearCart, addToCart, removeFromCart }}>{props.children}</CartContext.Provider>;
+  return <CartContext.Provider value={{ user, cart, subTotal, setUser, buyNow, clearCart, addToCart, removeFromCart }}>{props.children}</CartContext.Provider>;
 };
 
 export default CartState;

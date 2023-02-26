@@ -3,9 +3,11 @@ import Product from "@/models/Product";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import mongoose from "mongoose";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Slug = ({ product, variants, error }) => {
-  const { addToCart } = useCartContext();
+  const { addToCart, buyNow } = useCartContext();
   const router = useRouter();
   const { slug } = router.query;
   const [pin, setPin] = useState();
@@ -26,8 +28,28 @@ const Slug = ({ product, variants, error }) => {
     let pinJson = await pins.json();
     if (Object.keys(pinJson).includes(pin)) {
       setService(true);
+      toast.success("PIN code is servicable", {
+        position: "bottom-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } else {
       setService(false);
+      toast.error("Sorry! PIN code is not servicable", {
+        position: "bottom-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -41,6 +63,7 @@ const Slug = ({ product, variants, error }) => {
   return (
     <div>
       <section className="text-gray-600 body-font overflow-hidden min-h-screen">
+      <ToastContainer position="bottom-center" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
         <div className="container px-2 md:px-5 md:py-12 py-6 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
             <img alt="ecommerce" className="lg:w-1/2 w-full lg:h-auto md:px-12 object-cover object-top md:rounded" src={product.imageUrl} />
@@ -160,7 +183,14 @@ const Slug = ({ product, variants, error }) => {
               </div>
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">₹{product.price}</span>
-                <button className="flex disabled:bg-red-300 ml-4 text-white bg-red-500 border-0 py-2 px-2 md:px-6 hover:border-gray-600 hover:bg-red-600 rounded">Buy Now</button>
+                <button
+                  onClick={() => {
+                    buyNow(slug, product.price, product.title, size, color);
+                  }}
+                  className="flex disabled:bg-red-300 ml-4 text-white bg-red-500 border-0 py-2 px-2 md:px-6 hover:border-gray-600 hover:bg-red-600 rounded"
+                >
+                  Buy Now
+                </button>
                 <button
                   onClick={() => {
                     addToCart(slug, product.title, 1, size, color, product.price);

@@ -18,7 +18,7 @@ const Checkout = () => {
   const [city, setCity] = useState("");
   const [user, setUser] = useState({ value: null });
   const router = useRouter();
-  const { cart, addToCart, removeFromCart, clearCart, subTotal } = useCartContext();
+  const { cart, addToCart, removeFromCart, subTotal } = useCartContext();
 
 //   useEffect(() => {
 //     const myuser = JSON.parse(localStorage.getItem("myuser"));
@@ -30,22 +30,22 @@ const Checkout = () => {
 //     }
 //   }, []);
 
-  const fetchData = async (token) => {
-    let data = { token: token };
-    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    let res = await a.json();
-    setName(res.name);
-    setAddress(res.address);
-    setPhone(res.phone);
-    setPincode(res.pincode);
-    getPincode(res.pincode);
-  };
+  // const fetchData = async (token) => {
+  //   let data = { token: token };
+  //   let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   });
+  //   let res = await a.json();
+  //   setName(res.name);
+  //   setAddress(res.address);
+  //   setPhone(res.phone);
+  //   setPincode(res.pincode);
+  //   getPincode(res.pincode);
+  // };
 
   const getPincode = async (pin) => {
     let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
@@ -84,32 +84,32 @@ const Checkout = () => {
     }
   };
 
-  const handleOrder = async () => {
-    let oid = Math.floor(Math.random() * Date.now());
-    const data = { cart, oid, email, subTotal, address, name, pincode, phone };
-    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    let response = await res.json();
-    if (response.success) {
-      router.push(`/order?id=${response.orderId}`);
-    } else {
-      toast.error(response.error, {
-        position: "top-left",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
+  // const handleOrder = async () => {
+  //   let oid = Math.floor(Math.random() * Date.now());
+  //   const data = { cart, oid, email, subTotal, address, name, pincode, phone };
+  //   let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   });
+  //   let response = await res.json();
+  //   if (response.success) {
+  //     router.push(`/order?id=${response.orderId}`);
+  //   } else {
+  //     toast.error(response.error, {
+  //       position: "top-left",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   }
+  // };
 
   return (
     <>
@@ -195,7 +195,7 @@ const Checkout = () => {
             return (
               <li key={itemCode}>
                 <div className="flex justify-between md:justify-start my-5">
-                  <div className="md:w-1/5 font-semibold">{cart[itemCode].name}</div>
+                  <div className="md:w-1/5 font-semibold">{cart[itemCode].name}({cart[itemCode].size}/{cart[itemCode].variant})</div>
                   <div className="flex items-center justify-between font-semibold text-lg">
                     <AiFillMinusCircle
                       onClick={() => {

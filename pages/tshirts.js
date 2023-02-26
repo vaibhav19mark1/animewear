@@ -17,6 +17,7 @@ const Tshirts = ({ tshirts }) => {
         <h1 className="text-center m-3 text-2xl md:m-5 md:text-4xl font-semibold">T-Shirts</h1>
         <section>
           <div className="flex flex-wrap justify-center">
+          {Object.keys(tshirts).length === 0 && <p>Sorry! All the Tshirts are currently out of stock. New stock coming soon. Stay tuned!</p>}
             {Object.keys(tshirts).map((item) => {
               return (
                 <div key={tshirts[item]._id} className="lg:w-1/5 md:w-1/3 w-1/2 border border-gray-300 md:border-none md:shadow-lg m-0 md:m-5 md:transition md:ease-in-out md:hover:-translate-y-1 md:hover:scale-110 md:duration-300">
