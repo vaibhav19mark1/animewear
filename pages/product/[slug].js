@@ -1,10 +1,11 @@
 import { useCartContext } from "@/context/cart/cartContext";
 import Product from "@/models/Product";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import mongoose from "mongoose";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Error from "next/error";
 
 const Slug = ({ product, variants, error }) => {
   const { addToCart, buyNow } = useCartContext();
@@ -12,8 +13,15 @@ const Slug = ({ product, variants, error }) => {
   const { slug } = router.query;
   const [pin, setPin] = useState();
   const [service, setService] = useState();
-  const [size, setSize] = useState(product.size);
-  const [color, setColor] = useState(product.color);
+  const [size, setSize] = useState();
+  const [color, setColor] = useState();
+
+  useEffect(() => {
+    if (!error) {
+      setColor(product.color);
+      setSize(product.size);
+    }
+  }, [router.query]);
 
   const onChangePin = (e) => {
     setPin(e.target.value);
@@ -60,10 +68,14 @@ const Slug = ({ product, variants, error }) => {
     router.push(url);
   };
 
+  if (error == 404) {
+    return <Error statusCode={404} />;
+  }
+
   return (
     <div>
       <section className="text-gray-600 body-font overflow-hidden min-h-screen">
-      <ToastContainer position="bottom-center" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
+        <ToastContainer position="bottom-center" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
         <div className="container px-2 md:px-5 md:py-12 py-6 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
             <img alt="ecommerce" className="lg:w-1/2 w-full lg:h-auto md:px-12 object-cover object-top md:rounded" src={product.imageUrl} />
@@ -130,60 +142,71 @@ const Slug = ({ product, variants, error }) => {
                 {/* Sizes */}
                 <div className="flex items-center my-2">
                   <span className="mr-3">Sizes</span>
-                  <button
-                    onClick={() => {
-                      refreshVariant("S", color);
-                    }}
-                    disabled={!Object.keys(variants[color]).includes("S")}
-                    className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "S" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
-                  >
-                    S
-                  </button>
-                  <button
-                    onClick={() => {
-                      // setSize("M");
-                      refreshVariant("M", color);
-                    }}
-                    disabled={!Object.keys(variants[color]).includes("M")}
-                    className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "M" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
-                  >
-                    M
-                  </button>
-                  <button
-                    onClick={() => {
-                      // setSize("L");
-                      refreshVariant("L", color);
-                    }}
-                    disabled={!Object.keys(variants[color]).includes("L")}
-                    className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "L" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
-                  >
-                    L
-                  </button>
-                  <button
-                    onClick={() => {
-                      // setSize("XL");
-                      refreshVariant("XL", color);
-                    }}
-                    disabled={!Object.keys(variants[color]).includes("XL")}
-                    className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "XL" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
-                  >
-                    XL
-                  </button>
-                  <button
-                    onClick={() => {
-                      // setSize("XXL");
-                      refreshVariant("XXL", color);
-                    }}
-                    disabled={!Object.keys(variants[color]).includes("XXL")}
-                    className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "XXL" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
-                  >
-                    XXL
-                  </button>
+                  {color && (
+                    <button
+                      onClick={() => {
+                        refreshVariant("S", color);
+                      }}
+                      disabled={!Object.keys(variants[color]).includes("S")}
+                      className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "S" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
+                    >
+                      S
+                    </button>
+                  )}
+                  {color && (
+                    <button
+                      onClick={() => {
+                        // setSize("M");
+                        refreshVariant("M", color);
+                      }}
+                      disabled={!Object.keys(variants[color]).includes("M")}
+                      className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "M" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
+                    >
+                      M
+                    </button>
+                  )}
+                  {color && (
+                    <button
+                      onClick={() => {
+                        // setSize("L");
+                        refreshVariant("L", color);
+                      }}
+                      disabled={!Object.keys(variants[color]).includes("L")}
+                      className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "L" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
+                    >
+                      L
+                    </button>
+                  )}
+                  {color && (
+                    <button
+                      onClick={() => {
+                        // setSize("XL");
+                        refreshVariant("XL", color);
+                      }}
+                      disabled={!Object.keys(variants[color]).includes("XL")}
+                      className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "XL" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
+                    >
+                      XL
+                    </button>
+                  )}
+                  {color && (
+                    <button
+                      onClick={() => {
+                        // setSize("XXL");
+                        refreshVariant("XXL", color);
+                      }}
+                      disabled={!Object.keys(variants[color]).includes("XXL")}
+                      className={`border disabled:border-gray-300 disabled:text-gray-300 hover:border-red-600 rounded ${size == "XXL" ? "border-red-600" : "border-gray-300"} p-2 px-3 mx-1`}
+                    >
+                      XXL
+                    </button>
+                  )}
                 </div>
               </div>
               <div className="flex">
-                <span className="title-font font-medium text-2xl text-gray-900">₹{product.price}</span>
+                {product.availableQty <= 0 ? <span className="title-font font-medium text-2xl text-gray-900">Out of Stock!</span> : <span className="title-font font-medium text-2xl text-gray-900">₹{product.price}</span>}
                 <button
+                  disabled={product.availableQty <= 0}
                   onClick={() => {
                     buyNow(slug, product.price, product.title, size, color);
                   }}
@@ -192,6 +215,7 @@ const Slug = ({ product, variants, error }) => {
                   Buy Now
                 </button>
                 <button
+                  disabled={product.availableQty <= 0}
                   onClick={() => {
                     addToCart(slug, product.title, 1, size, color, product.price);
                   }}

@@ -9,11 +9,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-//   useEffect(() => {
-//     if(localStorage.getItem("myuser")){
-//       router.push("/")
-//     }
-//   }, []);
+  useEffect(() => {
+    if (localStorage.getItem("myuser")) {
+      router.push("/");
+    }
+  }, []);
 
   const handleChange = (e) => {
     if (e.target.name == "email") {
@@ -37,7 +37,7 @@ const Login = () => {
     setEmail("");
     setPassword("");
     if (response.success) {
-      localStorage.setItem("myuser", JSON.stringify({token: response.token, email: response.email}));
+      localStorage.setItem("myuser", JSON.stringify({ token: response.token, email: response.email }));
       toast.success("You are successfully logged in", {
         position: "bottom-left",
         autoClose: 3000,
@@ -49,7 +49,7 @@ const Login = () => {
         theme: "light",
       });
       setTimeout(() => {
-        router.push(`${process.env.NEXT_PUBLIC_HOST}`);
+        router.reload(`${process.env.NEXT_PUBLIC_HOST}`);
       }, 1000);
     } else {
       toast.error(response.error, {

@@ -7,31 +7,22 @@ import { AiOutlineShoppingCart, AiFillCloseCircle, AiFillPlusCircle, AiFillMinus
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { MdAccountCircle, MdRemoveShoppingCart } from "react-icons/md";
 
-const Navbar = ({setKey}) => {
-  const { user, setUser, cart, addToCart, removeFromCart, clearCart, subTotal } = useCartContext();
+const Navbar = () => {
+  const { user, logout, cart, addToCart, removeFromCart, clearCart, subTotal } = useCartContext();
   const [sideCart, setSideCart] = useState(false);
   const [dropdown, setDropdown] = useState();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   Object.keys(cart).length !== 0 && setSideCart(true);
-  //   let exempted=["/checkout", "/order","/orders","/myaccount","/login","/signup","/forgot","/about","/"]
-  //   if (exempted.includes(router.pathname)) {
-  //     setSideCart(false);
-  //   }
-  // }, []);
+  useEffect(() => {
+    Object.keys(cart).length !== 0 && setSideCart(true);
+    let exempted=["/checkout", "/order","/orders","/myaccount","/login","/signup","/forgot","/about","/"]
+    if (exempted.includes(router.pathname)) {
+      setSideCart(false);
+    }
+  }, []);
 
   const toggleCart = () => {
     setSideCart(!sideCart);
-  };
-
-  //! Logout
-  const logout = () => {
-    localStorage.removeItem("myuser");
-    setUser({ value: null });
-    console.log("Logout called");
-    setKey(Math.random());
-    router.push("/");
   };
 
   return (
@@ -54,7 +45,7 @@ const Navbar = ({setKey}) => {
         </div>
       )}
 
-      <div className="flex flex-col pb-4 md:pb-0 md:flex-row md:justify-start justify-center items-center z-10 shadow-lg sticky bg-white top-0 backdrop-blur-sm">
+      <div className={`flex flex-col pb-4 md:pb-0 md:flex-row md:justify-start justify-center items-center z-10 shadow-lg sticky bg-white top-0 backdrop-blur-sm ${!sideCart && "overflow-hidden"}`}>
         <div className="mr-auto md:mx-5">
           <Link href={"/"}>
             <Image src={"/logo-red.svg"} alt="logo" width={200} height={40} />
@@ -83,6 +74,7 @@ const Navbar = ({setKey}) => {
           <span onMouseOver={() => setDropdown(true)} onMouseLeave={() => setDropdown(false)}>
             {user.value && <MdAccountCircle className="text-xl md:text-3xl mx-2" />}
           </span>
+
           <AiOutlineShoppingCart className="text-xl md:text-3xl" onClick={toggleCart} />
         </div>
 

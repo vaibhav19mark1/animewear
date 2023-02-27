@@ -19,15 +19,15 @@ export default function App({ Component, pageProps }) {
     router.events.on("routeChangeComplete", () => {
       setProgress(100);
     });
-    setKey(Math.random());
+    setKey(Math.random())
   }, []);
 
   return (
     <>
       <CartState>
         <LoadingBar color="#db2777" progress={progress} waitingTime={400} onLoaderFinished={() => setProgress(0)} />
-        {key && <Navbar setKey={setKey}/>}
-        <Component {...pageProps} />
+        {key && <Navbar/>}
+        <Component setKey={setKey} {...pageProps} />
         <Footer />
       </CartState>
     </>

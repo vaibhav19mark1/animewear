@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Checkout = () => {
   const [name, setName] = useState("");
@@ -20,32 +20,31 @@ const Checkout = () => {
   const router = useRouter();
   const { cart, addToCart, removeFromCart, subTotal } = useCartContext();
 
-//   useEffect(() => {
-//     const myuser = JSON.parse(localStorage.getItem("myuser"));
-//     if (myuser && myuser.token) {
-//       setUser(myuser);
-//       setEmail(myuser.email);
-//       fetchData(myuser.token);
-//       getPincode();
-//     }
-//   }, []);
+  useEffect(() => {
+    const myuser = JSON.parse(localStorage.getItem("myuser"));
+    if (myuser && myuser.token) {
+      setUser(myuser);
+      setEmail(myuser.email);
+      fetchData(myuser.token);
+    }
+  }, []);
 
-  // const fetchData = async (token) => {
-  //   let data = { token: token };
-  //   let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   });
-  //   let res = await a.json();
-  //   setName(res.name);
-  //   setAddress(res.address);
-  //   setPhone(res.phone);
-  //   setPincode(res.pincode);
-  //   getPincode(res.pincode);
-  // };
+  const fetchData = async (token) => {
+    let data = { token: token };
+    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    let res = await a.json();
+    setName(res.name);
+    setAddress(res.address);
+    setPhone(res.phone);
+    setPincode(res.pincode);
+    getPincode(res.pincode);
+  };
 
   const getPincode = async (pin) => {
     let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
@@ -84,32 +83,32 @@ const Checkout = () => {
     }
   };
 
-  // const handleOrder = async () => {
-  //   let oid = Math.floor(Math.random() * Date.now());
-  //   const data = { cart, oid, email, subTotal, address, name, pincode, phone };
-  //   let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   });
-  //   let response = await res.json();
-  //   if (response.success) {
-  //     router.push(`/order?id=${response.orderId}`);
-  //   } else {
-  //     toast.error(response.error, {
-  //       position: "top-left",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //   }
-  // };
+  const handleOrder = async () => {
+    let oid = Math.floor(Math.random() * Date.now());
+    const data = { cart, oid, email, subTotal, address, name, pincode, phone, city, state };
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    let response = await res.json();
+    if (response.success) {
+      router.push(`/order?id=${response.orderId}`);
+    } else {
+      toast.error(response.error, {
+        position: "top-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   return (
     <>
@@ -117,7 +116,7 @@ const Checkout = () => {
         <title>Checkout</title>
       </Head>
       <div className="container m-auto min-h-screen">
-        {/* <ToastContainer position="top-left" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" /> */}
+        <ToastContainer position="top-left" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
         <h1 className="font-bold text-3xl my-8 text-center">Checkout</h1>
         <div className="mx-4">
           <h2 className="font-semibold text-xl">1. Delivery Details</h2>
@@ -189,33 +188,35 @@ const Checkout = () => {
         <div className="mx-4">
           <h2 className="font-semibold text-xl">2. Review Cart & Pay</h2>
           <div className="sideCart bg-red-100 p-6 m-2">
-          <ol className="list-decimal font-semibold ml-2">
-          {Object.keys(cart).length == 0 && <div className="my-4 text-center font-semibold">Your Cart is Empty!</div>}
-          {Object.keys(cart).map((itemCode) => {
-            return (
-              <li key={itemCode}>
-                <div className="flex justify-between md:justify-start my-5">
-                  <div className="md:w-1/5 font-semibold">{cart[itemCode].name}({cart[itemCode].size}/{cart[itemCode].variant})</div>
-                  <div className="flex items-center justify-between font-semibold text-lg">
-                    <AiFillMinusCircle
-                      onClick={() => {
-                        removeFromCart(itemCode, 1);
-                      }}
-                      className="text-red-500 mx-2 cursor-pointer"
-                    />
-                    <span>{cart[itemCode].qty}</span>
-                    <AiFillPlusCircle
-                      onClick={() => {
-                        addToCart(itemCode, cart[itemCode].name, 1, cart[itemCode].size, cart[itemCode].variant, cart[itemCode].price);
-                      }}
-                      className="text-red-500 mx-2 cursor-pointer"
-                    />
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ol>
+            <ol className="list-decimal font-semibold ml-2">
+              {Object.keys(cart).length == 0 && <div className="my-4 text-center font-semibold">Your Cart is Empty!</div>}
+              {Object.keys(cart).map((itemCode) => {
+                return (
+                  <li key={itemCode}>
+                    <div className="flex justify-between md:justify-start my-5">
+                      <div className="md:w-1/5 font-semibold">
+                        {cart[itemCode].name}({cart[itemCode].size}/{cart[itemCode].variant})
+                      </div>
+                      <div className="flex items-center justify-between font-semibold text-lg">
+                        <AiFillMinusCircle
+                          onClick={() => {
+                            removeFromCart(itemCode, 1);
+                          }}
+                          className="text-red-500 mx-2 cursor-pointer"
+                        />
+                        <span>{cart[itemCode].qty}</span>
+                        <AiFillPlusCircle
+                          onClick={() => {
+                            addToCart(itemCode, cart[itemCode].name, 1, cart[itemCode].size, cart[itemCode].variant, cart[itemCode].price);
+                          }}
+                          className="text-red-500 mx-2 cursor-pointer"
+                        />
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
             <span className="total">SubTotal: ₹{subTotal}</span>
           </div>
         </div>

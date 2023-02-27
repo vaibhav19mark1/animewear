@@ -80,7 +80,16 @@ const CartState = (props) => {
     saveCart({});
     console.log("Cart cleared");
   };
-  return <CartContext.Provider value={{ user, cart, subTotal, setUser, buyNow, clearCart, addToCart, removeFromCart }}>{props.children}</CartContext.Provider>;
+
+  //! Logout
+  const logout = () => {
+    localStorage.removeItem("myuser");
+    setUser({ value: null });
+    console.log("Logout called");
+    router.push("/");
+  };
+
+  return <CartContext.Provider value={{ user, cart, subTotal, logout, setUser, buyNow, clearCart, addToCart, removeFromCart }}>{props.children}</CartContext.Provider>;
 };
 
 export default CartState;
