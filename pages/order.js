@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import mongoose from "mongoose";
 import Order from "@/models/Order";
-import { useRouter } from "next/router";
 
 const MyOrder = ({ order }) => {
-  
   let products = order.products;
   return (
     <div className="min-h-screen">

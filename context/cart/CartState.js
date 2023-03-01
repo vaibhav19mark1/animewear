@@ -16,7 +16,6 @@ const CartState = (props) => {
         saveCart(JSON.parse(localStorage.getItem("cart")));
       }
     } catch (error) {
-      console.log(error);
       localStorage.clear();
     }
     const myuser = JSON.parse(localStorage.getItem("myuser"));
@@ -78,14 +77,12 @@ const CartState = (props) => {
   const clearCart = () => {
     setCart({});
     saveCart({});
-    console.log("Cart cleared");
   };
 
   //! Logout
   const logout = () => {
     localStorage.removeItem("myuser");
     setUser({ value: null });
-    console.log("Logout called");
     router.push("/");
   };
 

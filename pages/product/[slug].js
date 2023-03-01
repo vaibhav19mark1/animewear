@@ -95,7 +95,6 @@ const Slug = ({ product, variants, error }) => {
                   {Object.keys(variants).includes("black") && (
                     <button
                       onClick={() => {
-                        // setColor("black");
                         refreshVariant(size, "black");
                       }}
                       className={`border-2 ${color == "black" ? "border-gray-600" : "border-gray-300"} ml-1 bg-black rounded-full w-8 h-8 hover:border-gray-600`}
@@ -104,7 +103,6 @@ const Slug = ({ product, variants, error }) => {
                   {Object.keys(variants).includes("blue") && (
                     <button
                       onClick={() => {
-                        // setColor("blue");
                         refreshVariant(size, "blue");
                       }}
                       className={`border-2 ${color == "blue" ? "border-gray-600" : "border-gray-300"} ml-1 bg-blue-500 rounded-full w-8 h-8 hover:border-gray-600`}
@@ -113,7 +111,6 @@ const Slug = ({ product, variants, error }) => {
                   {Object.keys(variants).includes("red") && (
                     <button
                       onClick={() => {
-                        // setColor("red");
                         refreshVariant(size, "red");
                       }}
                       className={`border-2 ${color == "red" ? "border-gray-600" : "border-gray-300"} ml-1 bg-red-500 rounded-full w-8 h-8 hover:border-gray-600`}
@@ -122,7 +119,6 @@ const Slug = ({ product, variants, error }) => {
                   {Object.keys(variants).includes("green") && (
                     <button
                       onClick={() => {
-                        // setColor("green");
                         refreshVariant(size, "green");
                       }}
                       className={`border-2 ${color == "green" ? "border-gray-600" : "border-gray-300"} ml-1 bg-green-500 rounded-full w-8 h-8 hover:border-gray-600`}
@@ -131,7 +127,6 @@ const Slug = ({ product, variants, error }) => {
                   {Object.keys(variants).includes("yellow") && (
                     <button
                       onClick={() => {
-                        // setColor("yellow");
                         refreshVariant(size, "yellow");
                       }}
                       className={`border-2 ${color == "yellow" ? "border-gray-600" : "border-gray-300"} ml-1 bg-yellow-500 rounded-full w-8 h-8 hover:border-gray-600`}
@@ -156,7 +151,6 @@ const Slug = ({ product, variants, error }) => {
                   {color && (
                     <button
                       onClick={() => {
-                        // setSize("M");
                         refreshVariant("M", color);
                       }}
                       disabled={!Object.keys(variants[color]).includes("M")}
@@ -168,7 +162,6 @@ const Slug = ({ product, variants, error }) => {
                   {color && (
                     <button
                       onClick={() => {
-                        // setSize("L");
                         refreshVariant("L", color);
                       }}
                       disabled={!Object.keys(variants[color]).includes("L")}
@@ -180,7 +173,6 @@ const Slug = ({ product, variants, error }) => {
                   {color && (
                     <button
                       onClick={() => {
-                        // setSize("XL");
                         refreshVariant("XL", color);
                       }}
                       disabled={!Object.keys(variants[color]).includes("XL")}
@@ -192,7 +184,6 @@ const Slug = ({ product, variants, error }) => {
                   {color && (
                     <button
                       onClick={() => {
-                        // setSize("XXL");
                         refreshVariant("XXL", color);
                       }}
                       disabled={!Object.keys(variants[color]).includes("XXL")}

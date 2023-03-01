@@ -71,7 +71,6 @@ const MyAccount = () => {
       body: JSON.stringify(data),
     });
     let res = await a.json();
-    console.log(res);
     toast.success("User Info Upadted Successfully", {
       position: "top-left",
       autoClose: 5000,
