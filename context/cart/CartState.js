@@ -2,81 +2,85 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import CartContext from "./cartContext";
 
-const CartState = (props) => {
+const CartState = ({ children }) => {
+  const router = useRouter();
   const [cart, setCart] = useState({});
+  const [openCart, setOpenCart] = useState(false);
   const [user, setUser] = useState({ value: null });
   const [subTotal, setSubTotal] = useState(0);
-  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // getting cart from local storage
+    setIsClient(true);
     try {
-      if (localStorage.getItem("cart")) {
-        setCart(JSON.parse(localStorage.getItem("cart")));
-        saveCart(JSON.parse(localStorage.getItem("cart")));
-      }
+      const storedCart = JSON.parse(localStorage.getItem("cart")) || {};
+      const storedUser = JSON.parse(localStorage.getItem("myuser")) || {
+        value: null,
+      };
+
+      setCart(storedCart);
+      setUser(storedUser);
     } catch (error) {
-      localStorage.clear();
-    }
-    const myuser = JSON.parse(localStorage.getItem("myuser"));
-    if (myuser) {
-      setUser({ value: myuser.token, email: myuser.email });
+      console.error("Error loading data from local storage", error);
     }
   }, []);
 
-  //! Save Cart
-  const saveCart = (myCart) => {
-    localStorage.setItem("cart", JSON.stringify(myCart));
-    let subt = 0;
-    if (Object.keys(cart).length == 0) {
-      setSubTotal(0);
-      return;
+  useEffect(() => {
+    if (isClient) {
+      let total = Object.values(cart).reduce(
+        (acc, item) => acc + item.price * item.qty,
+        0
+      );
+      setSubTotal(total);
+      localStorage.setItem("cart", JSON.stringify(cart));
     }
-    let keys = Object.keys(myCart);
-    for (let i = 0; i < keys.length; i++) {
-      subt += myCart[keys[i]].price * myCart[keys[i]].qty;
-    }
-    setSubTotal(subt);
-  };
+  }, [cart, isClient]);
 
-  //! Add to cart
+  //! Open and close cart
+  const showCart = (show) => setOpenCart(show);
+
+  //! Add to cart (Fixed)
   const addToCart = (itemCode, name, qty, size, variant, price) => {
-    let newCart = cart;
-    if (itemCode in newCart) {
-      newCart[itemCode].qty += qty;
-    } else {
-      newCart[itemCode] = { qty: 1, size, variant, price, name };
-    }
-    saveCart(newCart);
-    setCart(newCart);
+    setCart((prevCart) => {
+      return {
+        ...prevCart,
+        [itemCode]: {
+          ...prevCart[itemCode],
+          qty: (prevCart[itemCode]?.qty || 0) + qty,
+          size,
+          variant,
+          price,
+          name,
+        },
+      };
+    });
+    !openCart && showCart(true);
   };
 
-  //! Buy Now
-  const buyNow = (itemCode, price, name, size, variant) => {
-    let newCart = {};
-    newCart[itemCode] = { qty: 1, price, name, size, variant };
-    setCart(newCart);
-    saveCart(newCart);
-    router.push("/checkout");
-  };
-
-  //! Remove from cart
+  //! Remove from cart (Fixed)
   const removeFromCart = (itemCode, qty) => {
-    let newCart = cart;
-    if (itemCode in newCart) {
-      newCart[itemCode].qty -= qty;
-    }
-    if (newCart[itemCode].qty <= 0) {
-      delete newCart[itemCode];
-    }
-    saveCart(newCart);
-    setCart(newCart);
+    setCart((prevCart) => {
+      if (!prevCart[itemCode]) return prevCart;
+
+      const newQty = prevCart[itemCode].qty - qty;
+      const newCart = { ...prevCart };
+
+      if (newQty <= 0) {
+        delete newCart[itemCode]; // Remove item if quantity is 0
+      } else {
+        newCart[itemCode] = { ...prevCart[itemCode], qty: newQty };
+      }
+      return newCart;
+    });
   };
 
   //! Clear Cart
-  const clearCart = () => {
-    setCart({});
-    saveCart({});
+  const clearCart = () => setCart({});
+
+  //! Buy Now
+  const buyNow = (itemCode, price, name, size, variant) => {
+    setCart({ [itemCode]: { qty: 1, price, name, size, variant } });
+    router.push("/checkout");
   };
 
   //! Logout
@@ -86,7 +90,25 @@ const CartState = (props) => {
     router.push("/");
   };
 
-  return <CartContext.Provider value={{ user, cart, subTotal, logout, setUser, buyNow, clearCart, addToCart, removeFromCart }}>{props.children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider
+      value={{
+        user,
+        cart,
+        subTotal,
+        openCart,
+        logout,
+        setUser,
+        buyNow,
+        clearCart,
+        addToCart,
+        removeFromCart,
+        showCart,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
 };
 
 export default CartState;

@@ -8,7 +8,7 @@ import "@/styles/globals.css";
 
 export default function App({ Component, pageProps }) {
   const [progress, setProgress] = useState(0);
-  const [key, setKey] = useState();
+  // const [key, setKey] = useState();
   const router = useRouter();
 
   useEffect(() => {
@@ -19,15 +19,21 @@ export default function App({ Component, pageProps }) {
     router.events.on("routeChangeComplete", () => {
       setProgress(100);
     });
-    setKey(Math.random())
+    // setKey(Math.random())
   }, []);
 
   return (
     <>
       <CartState>
-        <LoadingBar color="#db2777" progress={progress} waitingTime={400} onLoaderFinished={() => setProgress(0)} />
-        {key && <Navbar/>}
-        <Component setKey={setKey} {...pageProps} />
+        <LoadingBar
+          color="#db2777"
+          progress={progress}
+          waitingTime={400}
+          onLoaderFinished={() => setProgress(0)}
+        />
+        {/* {key && <Navbar/>} */}
+        <Navbar />
+        <Component {...pageProps} />
         <Footer />
       </CartState>
     </>
