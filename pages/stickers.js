@@ -4,30 +4,28 @@ import Head from "next/head";
 import Link from "next/link";
 import React from "react";
 
-const Hoodies = ({ hoodies }) => {
+const Stickers = ({ stickers }) => {
   return (
     <>
       <Head>
-        <title>Hoodies - AnimeWear</title>
-        <meta name="description" content="Best anime hoodies" />
+        <title>Stickers - AnimeWear</title>
+        <meta name="description" content="Best anime stickers" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/logo.ico" />
       </Head>
       <div className="min-h-screen">
-        {hoodies.length !== 0 && (
-          <h1 className="text-center m-3 text-2xl md:m-5 md:text-4xl font-semibold">
-            Hoodies and Sweatshirts
-          </h1>
-        )}
+        <h1 className="text-center m-3 text-2xl md:m-5 md:text-4xl font-semibold">
+          Stickers
+        </h1>
         <section>
           <div className="flex flex-wrap justify-center">
-            {hoodies.length === 0 && (
-              <p className="my-10">
-                Sorry! All the hoodies are currently out of stock. New stock
+            {stickers.length === 0 && (
+              <p>
+                Sorry! All the Stickers are currently out of stock. New stock
                 coming soon. Stay tuned!
               </p>
             )}
-            {hoodies.map((item) => {
+            {stickers.map((item) => {
               return (
                 <div
                   key={item._id}
@@ -39,13 +37,13 @@ const Hoodies = ({ hoodies }) => {
                   >
                     <img
                       src={item.imageUrl}
-                      alt="hoodie-image"
+                      alt="sticker-image"
                       className="object-top block"
                     />
                   </Link>
                   <div className="mt-4 pl-4 pb-4">
                     <h2 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                      Hoodie
+                      Tshirt
                     </h2>
                     <h3 className="text-gray-900 title-font text-lg font-medium">
                       {item.title}{" "}
@@ -65,16 +63,6 @@ const Hoodies = ({ hoodies }) => {
                       {item.size.includes("L") && (
                         <span className="border border-gray-300 px-1 mx-1">
                           L
-                        </span>
-                      )}
-                      {item.size.includes("XL") && (
-                        <span className="border border-gray-300 px-1 mx-1">
-                          XL
-                        </span>
-                      )}
-                      {item.size.includes("XXL") && (
-                        <span className="border border-gray-300 px-1 mx-1">
-                          XXL
                         </span>
                       )}
                     </div>
@@ -112,15 +100,16 @@ const Hoodies = ({ hoodies }) => {
   );
 };
 
-export default Hoodies;
+export default Stickers;
 
 export async function getServerSideProps() {
-  mongoose.set("strictQuery", true);
+  mongoose.set("strictQuery", false);
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGO_URI);
   }
-  const hoodies = await Product.find({ category: "hoodie" });
+  const stickers = await Product.find({ category: "sticker" });
+
   return {
-    props: { hoodies: JSON.parse(JSON.stringify(hoodies)) },
+    props: { stickers: JSON.parse(JSON.stringify(stickers)) },
   };
 }

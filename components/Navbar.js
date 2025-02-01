@@ -101,6 +101,12 @@ const Navbar = () => {
             <Link href={"/bags"}>
               <li className="hover:text-red-700">Bags</li>
             </Link>
+            <Link href={"/mugs"}>
+              <li className="hover:text-red-700">Mugs</li>
+            </Link>
+            <Link href={"/stickers"}>
+              <li className="hover:text-red-700">Stickers</li>
+            </Link>
           </ul>
         </div>
         <div className="cart absolute items-center right-0 top-4 md:top-3 mx-5 cursor-pointer flex">
